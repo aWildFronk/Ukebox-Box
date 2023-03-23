@@ -17,15 +17,16 @@ bool isPlaying = true;
 int strumSelect = 0;
 const int strumCount = 4;
 char *strumSongOptions[] = {"Riptide","Song B", "Song C","MODE SELECTION"};
-int strumCodes[] = {1,2,3,69};         //this would be an unique ID for each song to send to the arduino, so that it knows which song to play.
-                                    //The index should math the songs in the option idex's
+int strumCodes[] = {1,2,3,69};         //this would be an unique ID for each song to send to the arduino, so that it knows which song to play. 69 is always mode selection.
+                                      //The index should math the songs in the option index's
 
 int pluckSelect = 0;
 const int pluckCount = 4;
-char *pluckSongOptions[] = {"Over Rainbow","Song B", "Song C", "MODE SELECTION"};
+char *pluckSongOptions[] = {"Over The Rainbow","Song B", "Song C", "MODE SELECTION"};
 int pluckCodes[] = {1,2,3,69};
 
 void setup() {
+  Serial.begin(9600);
   pinMode(buttonOne,INPUT_PULLUP);
   pinMode(buttonTwo,INPUT_PULLUP);
 /*
