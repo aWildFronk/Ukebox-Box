@@ -1,0 +1,302 @@
+#include <Servo.h>
+#include <Wire.h> // This is mandatory to run I2C comms from the mega and uno
+
+
+#define SLAVE_ADDRESS 9
+
+int data_receive;
+
+int datasend;
+
+Servo servoA;
+Servo servoE;
+Servo servoC;
+Servo servoG;
+
+// initialize the Servo pins
+int stringA = 10;
+int stringE = 8;
+int stringC = 9;
+int stringG = 11;
+
+// initialize the solenoid pins
+
+int openString = 0;
+int solenoidG1 = 38;
+int solenoidC1 = 34;
+int solenoidA1 = 37;
+int solenoidE1 = 40;
+int solenoidG2 = 31;
+int solenoidC2 = 36;
+int solenoidA2 = 32;
+int solenoidE2 = 30;
+//int solenoidG3 = 32;    
+//int solenoidC3 = 39;
+int solenoidA3 = 33;
+int solenoidE3 = 39;
+
+//SERVO HELPERS
+bool previouspluck = false;
+bool solenoidOn = false;
+
+//int note_length = 0;    //to specify what length of note
+int whole = 150;        //arbitrary values, just to indicate relative length of each note
+int half = 50;
+int quarter = 25;
+int eigth = 13;
+
+int adjusted_note = 0; //arbitrary delay value to make the note lengths correct = note_length*tempo (then divided by a constant, which is determined through testing)
+int repeats = 0;       //indicate how many times to repeat pluck of notes of same string in succession (notes must be same duration)
+
+
+void setup() {
+  Serial.begin(9600);
+
+  Wire.begin(SLAVE_ADDRESS); // initialize I2C comm
+  //Wire.onReceive();
+  
+  // Setup for Servo pins 
+  servoA.attach(stringA);
+  servoE.attach(stringE);
+  servoC.attach(stringC);
+  servoG.attach(stringG);
+  
+  
+  //Setup for solenoid pins (rename based on string/fret)
+  pinMode(solenoidA1, OUTPUT);
+  pinMode(solenoidA2, OUTPUT);
+  pinMode(solenoidA3, OUTPUT);
+  pinMode(solenoidE1, OUTPUT);
+  pinMode(solenoidE2, OUTPUT);
+  pinMode(solenoidE3, OUTPUT);
+  pinMode(solenoidC1, OUTPUT);
+  pinMode(solenoidC2, OUTPUT);
+  //pinMode(solenoidC3, OUTPUT);
+  pinMode(solenoidG1, OUTPUT);
+  pinMode(solenoidG2, OUTPUT);
+  //pinMode(solenoidG3, OUTPUT);
+}
+
+void receiveData(){
+  data_receive = Wire.read();
+  Serial.println(data_receive);
+}
+
+// SERVO COMMANDS 
+void pluckA(int solenoid, int note_length){
+  if (solenoid != 0) {    //if not an open string
+    solenoidOn = true;     //actuates the solenoid needed
+    
+    while (solenoidOn == true){
+    digitalWrite(solenoid, HIGH);   //turn solenoid on
+    
+    if (previouspluck == false) {
+      digitalWrite(solenoid, HIGH);
+      servoA.write(20);                     //move to position 20
+      delay(note_length);
+      previouspluck = true;
+    }
+    else {
+      digitalWrite(solenoid, HIGH);
+      servoA.write(0);                       //move to position 0
+      delay(note_length);
+      previouspluck = false;
+    }
+
+    solenoidOn = false;
+    digitalWrite(solenoid, LOW);     //releases the solenoid after pluck
+    }
+  }
+  else {                            //for open sting
+    if (previouspluck == false) {
+        servoA.write(20);                     //move to position 20
+        delay(note_length);
+        previouspluck = true;
+      }
+    else {
+      servoA.write(0);                       //move to position 0
+      delay(note_length);
+      previouspluck = false;
+    }
+  }
+  delay(50);
+}
+
+void pluckE(int solenoid, int note_length){
+  if (solenoid != 0) {    //if not an open string
+    solenoidOn = true;     //actuates the solenoid needed
+    
+    while (solenoidOn == true){
+    digitalWrite(solenoid, HIGH);   //turn solenoid on
+    
+    if (previouspluck == false) {
+      digitalWrite(solenoid, HIGH);
+      servoE.write(20);                     //move to position 20
+      delay(note_length);
+      previouspluck = true;
+    }
+    else {
+      digitalWrite(solenoid, HIGH);
+      servoE.write(0);                       //move to position 0
+      delay(note_length);
+      previouspluck = false;
+    }
+
+    solenoidOn = false;
+    digitalWrite(solenoid, LOW);     //releases the solenoid after pluck
+    }
+  }
+  else {                            //for open sting
+    if (previouspluck == false) {
+        servoE.write(20);                     //move to position 20
+        delay(note_length);
+        previouspluck = true;
+      }
+    else {
+      servoE.write(0);                       //move to position 0
+      delay(note_length);
+      previouspluck = false;
+    }
+  }
+  delay(50);
+}
+
+void pluckC(int solenoid, int note_length){
+  if (solenoid != 0) {    //if not an open string
+    solenoidOn = true;     //actuates the solenoid needed
+    
+    while (solenoidOn == true){
+    digitalWrite(solenoid, HIGH);   //turn solenoid on
+    
+    if (previouspluck == false) {
+      digitalWrite(solenoid, HIGH);
+      servoC.write(20);                     //move to position 20
+      delay(note_length);
+      previouspluck = true;
+    }
+    else {
+      digitalWrite(solenoid, HIGH);
+      servoC.write(0);                       //move to position 0
+      delay(note_length);
+      previouspluck = false;
+    }
+
+    solenoidOn = false;
+    digitalWrite(solenoid, LOW);     //releases the solenoid after pluck
+    }
+  }
+  else {                            //for open sting
+    if (previouspluck == false) {
+        servoC.write(20);                     //move to position 20
+        delay(note_length);
+        previouspluck = true;
+      }
+    else {
+      servoC.write(0);                       //move to position 0
+      delay(note_length);
+      previouspluck = false;
+    }
+  }
+  delay(50);
+}
+
+void pluckG(int solenoid, int note_length){
+  if (solenoid != 0) {    //if not an open string
+    solenoidOn = true;     //actuates the solenoid needed
+    
+    while (solenoidOn == true){
+    digitalWrite(solenoid, HIGH);   //turn solenoid on
+    
+    if (previouspluck == false) {
+      digitalWrite(solenoid, HIGH);
+      servoG.write(20);                     //move to position 20
+      delay(note_length);
+      previouspluck = true;
+    }
+    else {
+      digitalWrite(solenoid, HIGH);
+      servoG.write(0);                       //move to position 0
+      delay(note_length);
+      previouspluck = false;
+    }
+
+    solenoidOn = false;
+    digitalWrite(solenoid, LOW);     //releases the solenoid after pluck
+    }
+  }
+  else {                            //for open sting
+    if (previouspluck == false) {
+        servoG.write(20);                     //move to position 20
+        delay(note_length);
+        previouspluck = true;
+      }
+    else {
+      servoG.write(0);                       //move to position 0
+      delay(note_length);
+      previouspluck = false;
+    }
+  }
+  delay(50);
+}
+
+void loop(){
+  // Send some data to the slave uno. This bit of code to be included on the master side only 
+  Wire.beginTransmission(SLAVE_ADDRESS);
+  Wire.write(datasend);
+
+  Wire.endTransmission();
+  
+  //Never Gonna Give You Up Melody
+  pluckC(openString, whole);    //C0
+  pluckC(solenoidC2, whole);    //C2
+  pluckE(solenoidE1, whole);    //E1
+  pluckC(solenoidC2, whole);    //C2
+  pluckA(openString, whole);    //A0
+  pluckA(openString, whole);    //A0
+  pluckG(openString, whole);    //G0
+  pluckC(openString, whole);    //C0
+  pluckC(solenoidC2, whole);    //C2
+  pluckE(solenoidE1, whole);    //E1
+  pluckC(solenoidC2, whole);    //C2
+  pluckG(openString, whole);    //G0
+  pluckG(openString, whole);    //G0
+  pluckE(solenoidE1, whole);    //E1
+  pluckC(openString, whole);    //C0
+  pluckC(solenoidC2, whole);    //C2
+  pluckE(solenoidE1, whole);    //E1
+  pluckC(solenoidC2, whole);    //C2
+  pluckE(solenoidE1, whole);    //E1
+  pluckG(openString, whole);    //G0
+  pluckE(openString, whole);    //E0
+  pluckC(solenoidC2, whole);    //C2
+  pluckC(openString, whole);    //C0
+  pluckC(openString, whole);    //C0
+  pluckG(openString, whole);    //G0
+  pluckE(solenoidE1, whole);    //E1 - end line one
+ /* pluckC(openString, whole);    //C0
+  pluckC(solenoidC2, whole);    //C2
+  pluckE(solenoidE1, whole);    //E1
+  pluckC(solenoidC2, whole);    //C2
+  pluckA(openString, whole);    //A0
+  pluckA(openString, whole);    //A0
+  pluckG(openString, whole);    //G0
+  pluckC(openString, whole);    //C0
+  pluckC(solenoidC2, whole);    //C2
+  pluckE(solenoidE1, whole);    //E1
+  pluckC(solenoidC2, whole);    //C2
+  pluckA(solenoidA3, whole);    //A3
+  pluckE(openString, whole);    //E0
+  pluckE(solenoidE1, whole);    //E1
+  pluckC(openString, whole);    //C0
+  pluckC(solenoidC2, whole);    //C2
+  pluckE(solenoidE1, whole);    //E1
+  pluckC(solenoidC2, whole);    //C2
+  pluckE(solenoidE1, whole);    //E1
+  pluckG(openString, whole);    //G0
+  pluckE(openString, whole);    //E0
+  pluckC(solenoidC2, whole);    //C2
+  pluckC(openString, whole);    //C0
+  pluckC(openString, whole);    //C0
+  pluckG(openString, whole);    //G0
+  pluckE(solenoidE1, whole);    //E1 */
+}
