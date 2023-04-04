@@ -49,7 +49,7 @@ int angG = 0;
 int whole = 750;        //arbitrary values, just to indicate relative length of each note
 int half = 500;
 int quarter = 250;
-int eigth = 125;
+int eigth = 200;
 
 void setup() {
   Serial.begin(9600);
@@ -84,8 +84,22 @@ void receiveData(){
   Serial.println(data_receive);
 }
 
+void solenoidOff(){
+  digitalWrite(solenoidA1, LOW);
+  digitalWrite(solenoidA2, LOW);
+  digitalWrite(solenoidA3, LOW);
+  digitalWrite(solenoidE1, LOW);
+  digitalWrite(solenoidE2, LOW);
+  digitalWrite(solenoidE3, LOW);
+  digitalWrite(solenoidC1, LOW);
+  digitalWrite(solenoidC2, LOW);
+  digitalWrite(solenoidG1, LOW);
+  digitalWrite(solenoidG3, LOW);
+}
+
 // SERVO COMMANDS 
 void pluckA(int solenoid, int note_length){
+  solenoidOff();
   if (solenoid != 0 && previouspluckA == false) {    //if not an open string and is the first pluck
     for (angA = 25; angA <= 25; angA++) {
       digitalWrite(solenoid, HIGH);
@@ -104,11 +118,12 @@ void pluckA(int solenoid, int note_length){
     previouspluckA = false;
   }
 
-  digitalWrite(solenoid, LOW);
+  //digitalWrite(solenoid, LOW);
   delay(50);
 }
 
 void pluckE(int solenoid, int noteLength){
+  solenoidOff();
   if (solenoid != 0 && previouspluckE == false) {    //if not an open string and is the first pluck
     for (angE = 25; angE <= 25; angE++) {
       digitalWrite(solenoid, HIGH);
@@ -127,11 +142,12 @@ void pluckE(int solenoid, int noteLength){
     previouspluckE = false;
   }
   
-  digitalWrite(solenoid, LOW);
+  //digitalWrite(solenoid, LOW);
   delay(50);
 }
 
 void pluckC(int solenoid, int noteLength){
+  solenoidOff();
   if (solenoid != 0 && previouspluckC == false) {    //if not an open string and is the first pluck
     for (angC = 25; angC <= 25; angC++) {
       digitalWrite(solenoid, HIGH);
@@ -150,11 +166,12 @@ void pluckC(int solenoid, int noteLength){
     previouspluckC = false;
   }
   
-  digitalWrite(solenoid, LOW);
+  //digitalWrite(solenoid, LOW);
   delay(50);
 }
 
 void pluckG(int solenoid, int noteLength){
+  solenoidOff();
   if (solenoid != 0 && previouspluckG == false) {    //if not an open string and is the first pluck
     for (angG = 25; angG <= 25; angG++) {
       digitalWrite(solenoid, HIGH);
@@ -173,11 +190,12 @@ void pluckG(int solenoid, int noteLength){
     previouspluckG = false;
   }
   
-  digitalWrite(solenoid, LOW);
+  //digitalWrite(solenoid, LOW);
   delay(50);
 }
 
 void pluckOpenA(int noteLength) {
+  solenoidOff();
   if (previouspluckA == false) {
     servoA.write(25);                     //move to position 20
     delay(noteLength);
@@ -191,6 +209,7 @@ void pluckOpenA(int noteLength) {
 }
 
 void pluckOpenE(int noteLength) {
+  solenoidOff();
   if (previouspluckE == false) {
     servoE.write(25);                     //move to position 20
     delay(noteLength);
@@ -204,6 +223,7 @@ void pluckOpenE(int noteLength) {
 }
 
 void pluckOpenC(int noteLength) {
+  solenoidOff();
   if (previouspluckC == false) {
     servoC.write(25);                     //move to position 20
     delay(noteLength);
@@ -217,6 +237,7 @@ void pluckOpenC(int noteLength) {
 }
 
 void pluckOpenG(int noteLength) {
+  solenoidOff();
   if (previouspluckG == false) {
     servoG.write(25);                     //move to position 20
     delay(noteLength);
@@ -229,86 +250,93 @@ void pluckOpenG(int noteLength) {
   }
 }
 
+
+//SONG FUNCTIONS
+
 void playRickroll(){
   //Never Gonna Give You Up Melody
+  double factor = 0.75;
+  
   delay(1000);
-  pluckOpenC(quarter);            //C0
-  pluckC(solenoidC2, quarter);    //C2
-  pluckE(solenoidE1, quarter);    //E1
-  pluckC(solenoidC2, quarter);    //C2
-  pluckOpenA(half);               //A0
-  pluckOpenA(half);               //A0
-  pluckOpenG(half);               //G0
-  delay(whole);                   //^Never gonna give you up^
+  pluckOpenC(quarter*factor);            //C0
+  pluckC(solenoidC2, quarter*factor);    //C2
+  pluckE(solenoidE1, quarter*factor);    //E1
+  pluckC(solenoidC2, quarter*factor);    //C2
+  pluckOpenA(half*factor);               //A0
+  pluckOpenA(half*factor);               //A0
+  pluckOpenG(half*factor);               //G0
+  delay(half*factor);                   //^Never gonna give you up^
   
-  pluckOpenC(quarter);            //C0
-  pluckC(solenoidC2, quarter);    //C2
-  pluckE(solenoidE1, quarter);    //E1
-  pluckC(solenoidC2, quarter);    //C2
-  pluckOpenG(half);               //G0
-  pluckOpenG(half);               //G0
-  pluckE(solenoidE1, half);       //E1
-  delay(half);                    //^Never gonna let you down^
+  pluckOpenC(quarter*factor);            //C0
+  pluckC(solenoidC2, quarter*factor);    //C2
+  pluckE(solenoidE1, quarter*factor);    //E1
+  pluckC(solenoidC2, quarter*factor);    //C2
+  pluckOpenG(half*factor);               //G0
+  pluckOpenG(half*factor);               //G0
+  pluckE(solenoidE1, half*factor);       //E1
+  delay(half*factor);                    //^Never gonna let you down^
   
-  pluckOpenC(quarter);            //C0
-  pluckC(solenoidC2, quarter);    //C2
-  pluckE(solenoidE1, quarter);    //E1
-  pluckC(solenoidC2, quarter);    //C2
-  pluckE(solenoidE1, half);       //E1
-  pluckOpenG(half);               //G0
-  pluckOpenE(half);               //E0
-  pluckC(solenoidC2, quarter);    //C2
-  pluckOpenC(quarter);            //C0
-  pluckOpenC(half);               //C0
-  pluckOpenG(half);               //G0
-  pluckE(solenoidE1, quarter);    //E1 
-  delay(whole);                   //^Never gonna run around and desert you^
+  pluckOpenC(quarter*factor);            //C0
+  pluckC(solenoidC2, quarter*factor);    //C2
+  pluckE(solenoidE1, quarter*factor);    //E1
+  pluckC(solenoidC2, quarter*factor);    //C2
+  pluckE(solenoidE1, half*factor);       //E1
+  pluckOpenG(half*factor);               //G0
+  pluckOpenE(half*factor);               //E0
+  pluckC(solenoidC2, quarter*factor);    //C2
+  pluckOpenC(quarter*factor);            //C0
+  pluckOpenC(half*factor);               //C0
+  pluckOpenG(half*factor);               //G0
+  pluckE(solenoidE1, quarter*factor);    //E1 
+  delay(half*factor);                   //^Never gonna run around and desert you^
   
-  pluckOpenC(quarter);            //C0
-  pluckC(solenoidC2, quarter);    //C2
-  pluckE(solenoidE1, quarter);    //E1
-  pluckC(solenoidC2, quarter);    //C2
-  pluckOpenA(half);               //A0
-  pluckOpenA(half);               //A0
-  pluckOpenG(half);               //G0
-  delay(whole);                   //^Never gonna make you cry^      
+  pluckOpenC(quarter*factor);            //C0
+  pluckC(solenoidC2, quarter*factor);    //C2
+  pluckE(solenoidE1, quarter*factor);    //E1
+  pluckC(solenoidC2, quarter*factor);    //C2
+  pluckOpenA(half*factor);               //A0
+  pluckOpenA(half*factor);               //A0
+  pluckOpenG(half*factor);               //G0
+  delay(half*factor);                   //^Never gonna make you cry^      
   
-  pluckOpenC(quarter);            //C0
-  pluckC(solenoidC2, quarter);    //C2
-  pluckE(solenoidE1, quarter);    //E1
-  pluckC(solenoidC2, quarter);    //C2
-  pluckA(solenoidA3, half);       //A3
-  pluckOpenE(half);               //E0
-  pluckE(solenoidE1, half);       //E1
-  delay(whole);                   //^Never gonna say goodbye^
+  pluckOpenC(quarter*factor);            //C0
+  pluckC(solenoidC2, quarter*factor);    //C2
+  pluckE(solenoidE1, quarter*factor);    //E1
+  pluckC(solenoidC2, quarter*factor);    //C2
+  pluckA(solenoidA3, half*factor);       //A3
+  pluckOpenE(half*factor);               //E0
+  pluckE(solenoidE1, half*factor);       //E1
+  delay(half*factor);                   //^Never gonna say goodbye^
   
-  pluckOpenC(quarter);            //C0
-  pluckC(solenoidC2, quarter);    //C2
-  pluckE(solenoidE1, quarter);    //E1
-  pluckC(solenoidC2, quarter);    //C2
-  pluckE(solenoidE1, half);       //E1
-  pluckOpenG(half);               //G0
-  pluckOpenE(half);               //E0
-  pluckC(solenoidC2, quarter);    //C2
-  pluckOpenC(quarter);            //C0
-  pluckOpenC(half);               //C0
-  pluckOpenG(half);               //G0
-  pluckE(solenoidE1, quarter);    //E1
+  pluckOpenC(quarter*factor);            //C0
+  pluckC(solenoidC2, quarter*factor);    //C2
+  pluckE(solenoidE1, quarter*factor);    //E1
+  pluckC(solenoidC2, quarter*factor);    //C2
+  pluckE(solenoidE1, half*factor);       //E1
+  pluckOpenG(half*factor);               //G0
+  pluckOpenE(half*factor);               //E0
+  pluckC(solenoidC2, quarter*factor);    //C2
+  pluckOpenC(quarter*factor);            //C0
+  pluckOpenC(half*factor);               //C0
+  pluckOpenG(half*factor);               //G0
+  pluckE(solenoidE1, quarter*factor);    //E1
   delay(whole);                   //^Never gonna tell a lie and hurt you^
+
+  solenoidOff();
 }
 
 void playHappybirthday(){
   delay(1000);
-  pluckOpenC(half);
-  pluckOpenC(half);
+  pluckOpenC(quarter);
+  pluckOpenC(quarter);
   pluckC(solenoidC2, half);
   pluckOpenC(half);
   pluckE(solenoidE1, half);
   pluckOpenE(half);
   delay(half);                //^Happy birthday to you^
 
-  pluckOpenC(half);
-  pluckOpenC(half);
+  pluckOpenC(quarter);
+  pluckOpenC(quarter);
   pluckC(solenoidC2, half);
   pluckOpenC(half);
   pluckE(solenoidE3, half);
@@ -320,44 +348,134 @@ void playHappybirthday(){
   pluckA(solenoidA3, half);
   pluckOpenA(half);
   pluckE(solenoidE1, half);
-  pluckOpenE(half);
-  pluckC(solenoidC2, half);
+  pluckOpenE(quarter);
+  pluckC(solenoidC2, quarter);
   delay(quarter);             //^Happy birthday dear ____^
 
-  pluckA(solenoidA1, half);
-  pluckA(solenoidA1, half);
+  pluckA(solenoidA1, quarter);
+  pluckA(solenoidA1, quarter);
   pluckOpenA(half);
   pluckE(solenoidE1, half);
   pluckE(solenoidE3, half);
   pluckE(solenoidE1, half);
   delay(1000);                //^Happy birthday to you^
+
+  solenoidOff();
 }
 
-void playGrassSkirtChase(){
-  pluckC(solenoidC2, half);
-  pluckOpenE(half);
-  pluckE(solenoidE1, half);
-  pluckOpenE(half);
-  pluckC(solenoidC2, quarter);
-  pluckOpenE(quarter);
-  pluckE(solenoidE1, quarter);
-  pluckA(solenoidA1, quarter);
-  pluckOpenA(quarter);
-  delay(500);
+void playLoveStory() {
+  double factor = 1.5;
+  
+  pluckOpenA(eigth*factor);
+  pluckA(solenoidA1, eigth*factor);
+  pluckA(solenoidA1, quarter*factor);
+  pluckA(solenoidA1, quarter*1.5*factor);
+  pluckA(solenoidA1, eigth*factor); 
 
-  pluckOpenA(quarter);
-  pluckA(solenoidA1, quarter);
-  pluckE(solenoidE3, half);
-  pluckA(solenoidA1, quarter);
-  pluckOpenA(quarter);
-  pluckE(solenoidE1, half);
-  pluckOpenA(quarter);
-  pluckE(solenoidE3, half);
-  pluckE(solenoidE1,half);
-  pluckOpenE(half);
-  pluckE(solenoidE1, quarter);
-  pluckOpenE(quarter);
+  pluckOpenA(eigth*factor);
+  pluckA(solenoidA1, quarter*factor);
+  pluckA(solenoidA3, quarter*1.5*factor);
+  pluckA(solenoidA1, eigth*factor);
+  pluckA(solenoidA1, eigth*factor);
+
+  pluckOpenA(eigth*factor);
+  pluckA(solenoidA1, quarter*factor);
+  pluckA(solenoidA1, quarter*1.5*factor);
+  pluckA(solenoidA1, eigth*factor);
+  pluckA(solenoidA1, eigth*factor);
+
+  pluckOpenA(eigth*2);
+  pluckA(solenoidA1, quarter*factor);
+  pluckA(solenoidA3, quarter*factor);
+  pluckA(solenoidA1, eigth*factor);
+  pluckOpenA(eigth*2);
+  pluckA(solenoidA1, eigth*1.5*factor);
+
+  pluckC(solenoidC2, whole);
+
+  delay(half);
+  pluckA(solenoidA1, eigth*factor);
+  pluckA(solenoidA1, eigth*factor);
+  pluckOpenA(quarter*factor);
+
+  pluckOpenC(eigth*factor);
+  pluckOpenC(eigth*factor);
+  pluckC(solenoidC2, half*1.5*factor);
+
+  delay(whole);
+
+  pluckOpenA(eigth*factor);
+  pluckA(solenoidA1, quarter*factor);
+  pluckA(solenoidA1, quarter*1.5*factor);
+  pluckA(solenoidA1, quarter*factor);
+  pluckA(solenoidA1, quarter*factor);
+
+  pluckOpenA(eigth*factor);
+  pluckOpenA(eigth*factor);
+  pluckA(solenoidA1, eigth*factor);
+  pluckA(solenoidA3, quarter*factor);
+  pluckA(solenoidA1, quarter*1.5*factor);
+
+  pluckOpenA(eigth*factor);
+  pluckA(solenoidA1, quarter*factor);
+  pluckA(solenoidA1, quarter*factor);
+  pluckA(solenoidA1, eigth*factor);
+  pluckA(solenoidA1, eigth*factor);
+  pluckA(solenoidA1, eigth*factor);
+
+  pluckOpenA(eigth*factor);
+  pluckA(solenoidA1, quarter*factor);
+  pluckA(solenoidA3, quarter*factor);
+  pluckA(solenoidA1, eigth*factor);
+  pluckOpenA(eigth*factor);
+  pluckA(solenoidA1, eigth*factor);
+
+  pluckC(solenoidC2, whole);
+
+  delay(half);
+  pluckA(solenoidA1, eigth*factor);
+  pluckOpenA(eigth*factor);
+  pluckOpenC(eigth*factor);
+  pluckOpenC(quarter*1.5*factor);
+  pluckC(solenoidC2, half*1.5*factor);
+
+  delay(half+quarter);
+  pluckA(solenoidA1, eigth*factor);
+  
+  solenoidOff();
+}
+
+void playSoulsister(){
   delay(1000);
+  pluckOpenA(half);
+
+  pluckE(solenoidE3, 600);
+  pluckE(solenoidE1, half);
+  pluckE(solenoidE3, half);
+  pluckOpenA(half);
+  pluckE(solenoidE1, quarter);
+  pluckC(solenoidC2, quarter);
+  delay(half);
+
+  pluckE(solenoidE1, half);
+  pluckE(solenoidE3, half);
+  pluckOpenA(half);
+  pluckE(solenoidE1, quarter);
+  pluckC(solenoidC2, quarter);
+  delay(whole);
+
+  pluckE(solenoidE1, quarter);
+  pluckOpenA(half);
+  pluckOpenA(half);
+  pluckOpenA(whole);
+  delay(quarter);
+
+  pluckE(solenoidE3, eigth);
+  pluckOpenA(eigth);
+  pluckA(solenoidA1, eigth);
+  pluckOpenA(eigth);
+  pluckE(solenoidE3, eigth);
+  
 }
 
 void loop(){
@@ -372,6 +490,8 @@ void loop(){
   servoC.write(angC);
   servoG.write(angG);
 
-  playHappybirthday();
-  //playRickroll();
+  //playLoveStory();
+  //playHappybirthday();
+  playRickroll();
+  //playSoulsister();
 }
