@@ -20,17 +20,17 @@ int stringC = 9;
 int stringG = 11;
 
 // initialize the solenoid pins
-int solenoidG1 = 38;
+int solenoidG1 = 40;
 int solenoidC1 = 34;
 int solenoidA1 = 37;
-int solenoidE1 = 40;
-int solenoidG2 = 31;
-int solenoidC2 = 36;
+int solenoidE1 = 31;
+//int solenoidG2 = 31;
+int solenoidC2 = 34;
 int solenoidA2 = 32;
-int solenoidE2 = 30;
-//int solenoidG3 = 32;    
+int solenoidE2 = 33;
+int solenoidG3 = 35;    
 //int solenoidC3 = 39;
-int solenoidA3 = 33;
+int solenoidA3 = 38;
 int solenoidE3 = 39;
 
 //SERVO HELPERS
@@ -65,18 +65,18 @@ void setup() {
   
   
   //Setup for solenoid pins (rename based on string/fret)
-  //pinMode(solenoidA1, OUTPUT);
-  //pinMode(solenoidA2, OUTPUT);
-  //pinMode(solenoidA3, OUTPUT);
+  pinMode(solenoidA1, OUTPUT);
+  pinMode(solenoidA2, OUTPUT);
+  pinMode(solenoidA3, OUTPUT);
   pinMode(solenoidE1, OUTPUT);
-  //pinMode(solenoidE2, OUTPUT);
-  //pinMode(solenoidE3, OUTPUT);
-  //pinMode(solenoidC1, OUTPUT);
+  pinMode(solenoidE2, OUTPUT);
+  pinMode(solenoidE3, OUTPUT);
+  pinMode(solenoidC1, OUTPUT);
   pinMode(solenoidC2, OUTPUT);
   //pinMode(solenoidC3, OUTPUT);
-  //pinMode(solenoidG1, OUTPUT);
+  pinMode(solenoidG1, OUTPUT);
   //pinMode(solenoidG2, OUTPUT);
-  //pinMode(solenoidG3, OUTPUT);
+  pinMode(solenoidG3, OUTPUT);
 }
 
 void receiveData(){
@@ -87,8 +87,8 @@ void receiveData(){
 // SERVO COMMANDS 
 void pluckA(int solenoid, int note_length){
   if (solenoid != 0 && previouspluckA == false) {    //if not an open string and is the first pluck
-    for (angA = 20; angA <= 20; angA++) {
-    digitalWrite(solenoid, HIGH);
+    for (angA = 25; angA <= 25; angA++) {
+      digitalWrite(solenoid, HIGH);
       servoA.write(angA);
       delay(500);
     }
@@ -110,7 +110,7 @@ void pluckA(int solenoid, int note_length){
 
 void pluckE(int solenoid, int noteLength){
   if (solenoid != 0 && previouspluckE == false) {    //if not an open string and is the first pluck
-    for (angE = 20; angE <= 20; angE++) {
+    for (angE = 25; angE <= 25; angE++) {
       digitalWrite(solenoid, HIGH);
       servoE.write(angE);
       delay(noteLength);
@@ -133,7 +133,7 @@ void pluckE(int solenoid, int noteLength){
 
 void pluckC(int solenoid, int noteLength){
   if (solenoid != 0 && previouspluckC == false) {    //if not an open string and is the first pluck
-    for (angC = 20; angC <= 20; angC++) {
+    for (angC = 25; angC <= 25; angC++) {
       digitalWrite(solenoid, HIGH);
       servoC.write(angC);
       delay(noteLength);
@@ -154,32 +154,32 @@ void pluckC(int solenoid, int noteLength){
   delay(50);
 }
 
-void pluckG(int solenoid, int note_length){
+void pluckG(int solenoid, int noteLength){
   if (solenoid != 0 && previouspluckG == false) {    //if not an open string and is the first pluck
-    for (angG = 0; angG >= 0; angG--) {
+    for (angG = 25; angG <= 25; angG++) {
       digitalWrite(solenoid, HIGH);
       servoG.write(angG);
-      delay(500);
+      delay(noteLength);
     }
     previouspluckG = true;
   }
 
   else if (solenoid != 0 && previouspluckG == true) {  //if not an open string and is not the first pluck
-    for (angG = 20; angG <= 20; angG++) {
+    for (angG = 0; angG >= 0; angG--) {
       digitalWrite(solenoid, HIGH);
-      servoG.write(angG);
-      delay(500);
+      servoG.write(angC);
+      delay(noteLength);
     }
     previouspluckG = false;
   }
-
+  
   digitalWrite(solenoid, LOW);
   delay(50);
 }
 
 void pluckOpenA(int noteLength) {
   if (previouspluckA == false) {
-    servoA.write(20);                     //move to position 20
+    servoA.write(25);                     //move to position 20
     delay(noteLength);
     previouspluckA = true;
   }
@@ -192,41 +192,145 @@ void pluckOpenA(int noteLength) {
 
 void pluckOpenE(int noteLength) {
   if (previouspluckE == false) {
-        servoE.write(20);                     //move to position 20
-        delay(noteLength);
-        previouspluckE = true;
-    }
-    else {
-      servoE.write(0);                       //move to position 0
-      delay(noteLength);
-      previouspluckE = false;
-    }
+    servoE.write(25);                     //move to position 20
+    delay(noteLength);
+    previouspluckE = true;
+  }
+  else {
+    servoE.write(0);                       //move to position 0
+    delay(noteLength);
+    previouspluckE = false;
+  }
 }
 
 void pluckOpenC(int noteLength) {
   if (previouspluckC == false) {
-        servoC.write(20);                     //move to position 20
-        delay(noteLength);
-        previouspluckC = true;
-    }
-    else {
-      servoC.write(0);                       //move to position 0
-      delay(noteLength);
-      previouspluckC = false;
-    }
+    servoC.write(25);                     //move to position 20
+    delay(noteLength);
+    previouspluckC = true;
+  }
+  else {
+    servoC.write(0);                       //move to position 0
+    delay(noteLength);
+    previouspluckC = false;
+  }
 }
 
 void pluckOpenG(int noteLength) {
   if (previouspluckG == false) {
-        servoG.write(20);                     //move to position 20
-        delay(noteLength);
-        previouspluckG = true;
-    }
-    else {
-      servoG.write(0);                       //move to position 0
-      delay(noteLength);
-      previouspluckG = false;
-    }
+    servoG.write(25);                     //move to position 20
+    delay(noteLength);
+    previouspluckG = true;
+  }
+  else {
+    servoG.write(0);                       //move to position 0
+    delay(noteLength);
+    previouspluckG = false;
+  }
+}
+
+void playRickroll(){
+  //Never Gonna Give You Up Melody
+  delay(1000);
+  pluckOpenC(quarter);            //C0
+  pluckC(solenoidC2, quarter);    //C2
+  pluckE(solenoidE1, quarter);    //E1
+  pluckC(solenoidC2, quarter);    //C2
+  pluckOpenA(half);               //A0
+  pluckOpenA(half);               //A0
+  pluckOpenG(half);               //G0
+  delay(whole);                   //^Never gonna give you up^
+  
+  pluckOpenC(quarter);            //C0
+  pluckC(solenoidC2, quarter);    //C2
+  pluckE(solenoidE1, quarter);    //E1
+  pluckC(solenoidC2, quarter);    //C2
+  pluckOpenG(half);               //G0
+  pluckOpenG(half);               //G0
+  pluckE(solenoidE1, half);       //E1
+  delay(half);                    //^Never gonna let you down^
+  
+  pluckOpenC(quarter);            //C0
+  pluckC(solenoidC2, quarter);    //C2
+  pluckE(solenoidE1, quarter);    //E1
+  pluckC(solenoidC2, quarter);    //C2
+  pluckE(solenoidE1, half);       //E1
+  pluckOpenG(half);               //G0
+  pluckOpenE(half);               //E0
+  pluckC(solenoidC2, quarter);    //C2
+  pluckOpenC(quarter);            //C0
+  pluckOpenC(half);               //C0
+  pluckOpenG(half);               //G0
+  pluckE(solenoidE1, quarter);    //E1 
+  delay(whole);                   //^Never gonna run around and desert you^
+  
+  pluckOpenC(quarter);            //C0
+  pluckC(solenoidC2, quarter);    //C2
+  pluckE(solenoidE1, quarter);    //E1
+  pluckC(solenoidC2, quarter);    //C2
+  pluckOpenA(half);               //A0
+  pluckOpenA(half);               //A0
+  pluckOpenG(half);               //G0
+  delay(whole);                   //^Never gonna make you cry^      
+  
+  pluckOpenC(quarter);            //C0
+  pluckC(solenoidC2, quarter);    //C2
+  pluckE(solenoidE1, quarter);    //E1
+  pluckC(solenoidC2, quarter);    //C2
+  pluckA(solenoidA3, half);       //A3
+  pluckOpenE(half);               //E0
+  pluckE(solenoidE1, half);       //E1
+  delay(whole);                   //^Never gonna say goodbye^
+  
+  pluckOpenC(quarter);            //C0
+  pluckC(solenoidC2, quarter);    //C2
+  pluckE(solenoidE1, quarter);    //E1
+  pluckC(solenoidC2, quarter);    //C2
+  pluckE(solenoidE1, half);       //E1
+  pluckOpenG(half);               //G0
+  pluckOpenE(half);               //E0
+  pluckC(solenoidC2, quarter);    //C2
+  pluckOpenC(quarter);            //C0
+  pluckOpenC(half);               //C0
+  pluckOpenG(half);               //G0
+  pluckE(solenoidE1, quarter);    //E1
+  delay(whole);                   //^Never gonna tell a lie and hurt you^
+}
+
+void playHappybirthday(){
+  delay(1000);
+  pluckOpenC(half);
+  pluckOpenC(half);
+  pluckC(solenoidC2, half);
+  pluckOpenC(half);
+  pluckE(solenoidE1, half);
+  pluckOpenE(half);
+  delay(half);                //^Happy birthday to you^
+
+  pluckOpenC(half);
+  pluckOpenC(half);
+  pluckC(solenoidC2, half);
+  pluckOpenC(half);
+  pluckE(solenoidE3, half);
+  pluckE(solenoidE1, half);   
+  delay(half);                //^Happy birthday to you^
+
+  pluckOpenC(half);
+  pluckOpenC(half);
+  pluckA(solenoidA3, half);
+  pluckOpenA(half);
+  pluckE(solenoidE1, half);
+  pluckOpenE(half);
+  pluckC(solenoidC2, half);
+  delay(quarter);             //^Happy birthday dear ____^
+
+  pluckA(solenoidA1, half);
+  pluckA(solenoidA1, half);
+  pluckOpenA(half);
+  pluckE(solenoidE1, half);
+  pluckE(solenoidE3, half);
+  pluckE(solenoidE1, half);
+  delay(1000);                //^Happy birthday to you^
 }
 
 void loop(){
@@ -240,70 +344,7 @@ void loop(){
   servoE.write(angE);
   servoC.write(angC);
   servoG.write(angG);
-  
-  //Never Gonna Give You Up Melody
-  delay(1000);
-  pluckOpenC(half);    //C0
-  pluckC(solenoidC2, half);    //C2
-  pluckE(solenoidE1, half);    //E1
-  pluckC(solenoidC2, half);    //C2
-  pluckOpenA(whole);    //A0
-  pluckOpenA(whole);    //A0
-  pluckOpenG(whole);    //G0
-  delay(whole);         //^Never gonna give you up^
-  
-  pluckOpenC(whole);    //C0
-  pluckC(solenoidC2, whole);    //C2
-  pluckE(solenoidE1, whole);    //E1
-  pluckC(solenoidC2, whole);    //C2
-  pluckOpenG(whole);    //G0
-  pluckOpenG(whole);    //G0
-  pluckE(solenoidE1, whole);    //E1
-  delay(half);                  //^Never gonna let you down^
-  
-  pluckOpenC(whole);    //C0
-  pluckC(solenoidC2, whole);    //C2
-  pluckE(solenoidE1, whole);    //E1
-  pluckC(solenoidC2, whole);    //C2
-  pluckE(solenoidE1, whole);    //E1
-  pluckOpenG(whole);    //G0
-  pluckOpenE(whole);    //E0
-  pluckC(solenoidC2, whole);    //C2
-  pluckOpenC(whole);    //C0
-  pluckOpenC(whole);    //C0
-  pluckOpenG(whole);    //G0
-  pluckE(solenoidE1, whole);    //E1 
-  delay(whole);                 //^Never gonna run around and desert you^
-  
-  pluckOpenC(owhole);    //C0
-  pluckC(solenoidC2, whole);    //C2
-  pluckE(solenoidE1, whole);    //E1
-  pluckC(solenoidC2, whole);    //C2
-  pluckOpenA(whole);    //A0
-  pluckOpenA(whole);    //A0
-  pluckOpenG(whole);    //G0
-  delay(whole);                //^Never gonna make you cry^      
-  
-  pluckOpenC(whole);    //C0
-  pluckC(solenoidC2, whole);    //C2
-  pluckE(solenoidE1, whole);    //E1
-  pluckC(solenoidC2, whole);    //C2
-  pluckA(solenoidA3, whole);    //A3
-  pluckOpenE(whole);    //E0
-  pluckE(solenoidE1, whole);    //E1
-  delay(whole);                 //^Never gonna say goodbye^
-  
-  pluckOpenC(whole);    //C0
-  pluckC(solenoidC2, whole);    //C2
-  pluckE(solenoidE1, whole);    //E1
-  pluckC(solenoidC2, whole);    //C2
-  pluckE(solenoidE1, whole);    //E1
-  pluckOpenG(whole);    //G0
-  pluckOpenE(whole);    //E0
-  pluckC(solenoidC2, whole);    //C2
-  pluckOpenC(whole);    //C0
-  pluckOpenC(whole);    //C0
-  pluckOpenG(whole);    //G0
-  pluckE(solenoidE1, whole);    //E1
-  delay(whole);                 //^Never gonna tell a lie and hurt you^
+
+  playHappybirthday();
+  //playRickroll();
 }
