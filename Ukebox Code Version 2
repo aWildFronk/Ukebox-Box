@@ -333,6 +333,33 @@ void playHappybirthday(){
   delay(1000);                //^Happy birthday to you^
 }
 
+void playGrassSkirtChase(){
+  pluckC(solenoidC2, half);
+  pluckOpenE(half);
+  pluckE(solenoidE1, half);
+  pluckOpenE(half);
+  pluckC(solenoidC2, quarter);
+  pluckOpenE(quarter);
+  pluckE(solenoidE1, quarter);
+  pluckA(solenoidA1, quarter);
+  pluckOpenA(quarter);
+  delay(500);
+
+  pluckOpenA(quarter);
+  pluckA(solenoidA1, quarter);
+  pluckE(solenoidE3, half);
+  pluckA(solenoidA1, quarter);
+  pluckOpenA(quarter);
+  pluckE(solenoidE1, half);
+  pluckOpenA(quarter);
+  pluckE(solenoidE3, half);
+  pluckE(solenoidE1,half);
+  pluckOpenE(half);
+  pluckE(solenoidE1, quarter);
+  pluckOpenE(quarter);
+  delay(1000);
+}
+
 void loop(){
   // Send some data to the slave uno. This bit of code to be included on the master side only 
   Wire.beginTransmission(SLAVE_ADDRESS);
