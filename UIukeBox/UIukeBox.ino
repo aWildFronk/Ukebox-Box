@@ -16,7 +16,7 @@ bool isPlaying = true;
 
 int songSelect = 0;
 const int songCount = 3;
-char *songOptions[] = {"Over The Rainbow","Song B", "Song C"};
+char *songOptions[] = {"Happy Birthday","Love story", "Surprise"};
 int songCodes[] = {1,2,3};
 
 void setup() {
@@ -75,9 +75,9 @@ void Button1(){       //function for button1 interupt. will pause/play if in pla
     if(songSelect >= songCount)
       songSelect = 0;      
   }        
-  else if(states == PLAYING){
-    pausePlay();
-  }
+  //else if(states == PLAYING){
+    //pausePlay();
+  //}
   updateDisplay();
 }
 
@@ -88,15 +88,15 @@ void Button2(){    //if in MODE state, will select mode, if in MENU state, will 
     play();
   }
   else if(states == PLAYING){
-    if(!isPlaying)
-      pausePlay();
+    //if(!isPlaying)
+      //pausePlay();
     states = MENU;
   }
   updateDisplay();
 }
 
 void play(){
-  int selectedSong = 0;
+  int selectedSong;
   selectedSong = songCodes[songSelect];
   Serial.println(selectedSong);
 }
