@@ -479,19 +479,22 @@ void playSoulsister(){
 }
 
 void loop(){
-  Serial.println(songReceive);
-  delay(1500);
+  //Serial.println(songReceive);  USED TO RUN I2C TRANSMISSION TEST
+ // delay(1500);
   
   while(songReceive == 0 || songReceive == 1 || songReceive == 2 ) {
     if(songReceive == 0) {
       playHappybirthday();
+      solenoidOff();
       
     }
     else if(songReceive == 1) {
       playLoveStory();
+      solenoidOff();
     }
     else {
       playRickroll();
+      solenoidOff();
     }
   }
 
