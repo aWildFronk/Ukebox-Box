@@ -10,7 +10,7 @@ const int buttonTwo = 2;      //This is the Select Button
 enum state {MENU,PLAYING};
 enum state states;
 int maxStates = 2;
-int mode = 0;                 //This is to select between Mode 0 (plucking) or Mode 1 (Strumming)
+int mode = 0;                 //This is to select between Mode 0 (plucking) or Mode 1 (Strumming) //deprecated
 
 bool isPlaying = true;
 
@@ -18,6 +18,8 @@ int songSelect = 0;
 const int songCount = 3;
 char *songOptions[] = {"Happy Birthday","Love story", "Surprise"};
 int songCodes[] = {1,2,3};
+
+
 
 void setup() {
   Serial.begin(9600);
