@@ -5,8 +5,8 @@
 #define SLAVE_ADDRESS 9
 
 
-//initialize UI pin
-int songReceive = 5;
+//RANDOM INTEGER GREATER THAN MAX NO.OF SONGS TO PREVENT DEFAULT TO 0 
+int songReceive = 500;
 
 Servo servoA;
 Servo servoE;
@@ -27,7 +27,7 @@ int solenoidE1 = 31;
 int solenoidC2 = 35;
 int solenoidA2 = 32;  
 int solenoidE2 = 33;
-int solenoidG3 = 36;    
+int solenoidG2 = 36;    
 int solenoidA3 = 38;
 int solenoidE3 = 39;
 
@@ -340,6 +340,85 @@ void playTwinkleTwinkle() {
 
   solenoidOff();
 }
+
+void strumCmaj(int notelength){
+  if (previousStrum == false) {
+    digitalWrite(solenoidA3, HIGH);
+    servoG.write(25);
+    servoC.write(25);                     //move to position 20
+    servoA.write(25);
+    servoE.write(25);
+    delay(notelength);
+    previousStrum= true;
+  }
+  else {
+    digitalWrite(solenoidA3, HIGH);
+    servoG.write(0);
+    servoC.write(0);                       //move to position 0
+    servoA.write(0);
+    servoE.write(0);
+    delay(notelength);
+    previousStrum = false;
+  }
+}
+
+void strumAmin(int notelength){
+  if (previousStrum == false) {
+    digitalWrite(solenoidG2, HIGH);
+    servoG.write(25);
+    servoC.write(25);                     //move to position 20
+    servoA.write(25);
+    servoE.write(25);
+    delay(notelength);
+    previousStrum = true;
+  }
+  else {
+    digitalWrite(solenoidG2, HIGH);
+    servoG.write(0);
+    servoC.write(0);                       //move to position 0
+    servoA.write(0);
+    servoE.write(0);
+    delay(notelength);
+    previousStrum = false;
+  }
+}
+
+void strumGmaj(int notelength){
+  if (previousStrum == false) {
+    digitalWrite(solenoidC2, HIGH);
+    digitalWrite(solenoidA2, HIGH);
+    digitalWrite(solenoidE3, HIGH);
+    servoG.write(25);
+    servoC.write(25);                     //move to position 20
+    servoA.write(25);
+    servoE.write(25);
+    delay(notelength);
+    previousStrum = true;
+  }
+  else {
+    digitalWrite(solenoidC2, HIGH);
+    digitalWrite(solenoidA2, HIGH);
+    digitalWrite(solenoidE3, HIGH);
+    servoG.write(0);
+    servoC.write(0);                       //move to position 0
+    servoA.write(0);
+    servoE.write(0);
+    delay(notelength);
+    previousStrum = false;
+  }
+}
+
+void playchords(){
+ 
+ strumAmin(quarter);
+  delay(500);
+  strumCmaj(quarter);
+  delay(500);
+  strumGmaj(quarter);
+  delay(500);
+
+}
+
 
 void loop(){
   //Serial.println(songReceive);  USED TO RUN I2C TRANSMISSION TEST
