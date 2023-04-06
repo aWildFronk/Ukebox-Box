@@ -35,7 +35,7 @@ void setup() {
 }
 
 void loop() {
-  Wire.beginTransmission(SLAVE_ADDRESS);
+
 
   if(digitalRead(buttonOne)==0){
     Button1();
@@ -102,6 +102,7 @@ void Button2(){    //if in MENU state, will select song
 void play(){
   Wire.write(songSelect);
   Serial.println(songSelect);
+  Wire.endTransmission();
 }
 
 void pausePlay(){     //insert some way of pausing it
