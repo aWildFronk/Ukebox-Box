@@ -1,0 +1,369 @@
+#include <Servo.h>
+#include <Wire.h> // This is mandatory to run I2C comms from the mega and uno
+
+
+#define SLAVE_ADDRESS 9
+
+
+//initialize UI pin
+int songReceive = 5;
+
+Servo servoA;
+Servo servoE;
+Servo servoC;
+Servo servoG;
+
+// initialize the Servo pins
+int stringA = 10;
+int stringE = 8;
+int stringC = 9;
+int stringG = 11;
+
+// initialize the solenoid pins
+int solenoidG1 = 40;
+int solenoidC1 = 34; 
+int solenoidA1 = 37;
+int solenoidE1 = 31;
+int solenoidC2 = 35;
+int solenoidA2 = 32;  
+int solenoidE2 = 33;
+int solenoidG3 = 36;    
+int solenoidA3 = 38;
+int solenoidE3 = 39;
+
+//SERVO HELPERS
+bool previouspluckA = false;
+bool previouspluckE = false;
+bool previouspluckC = false;
+bool previouspluckG = false;
+
+//Servo Angle
+int angA = 0;
+int angE = 0;
+int angC = 0;
+int angG = 0;
+
+int whole = 750;        //arbitrary values, just to indicate relative length of each note
+int half = 500;
+int quarter = 250;
+int eigth = 200;
+
+void setup() {
+  Serial.begin(9600);
+
+  Wire.begin(SLAVE_ADDRESS); // initialize I2C comm
+  Wire.onReceive(receiveData);
+  
+  // Setup for Servo pins 
+  servoA.attach(stringA);
+  servoE.attach(stringE);
+  servoC.attach(stringC);
+  servoG.attach(stringG);
+  
+  
+  // Setup for solenoid pins
+  pinMode(solenoidA1, OUTPUT);
+  pinMode(solenoidA2, OUTPUT);
+  pinMode(solenoidA3, OUTPUT);
+  pinMode(solenoidE1, OUTPUT);
+  pinMode(solenoidE2, OUTPUT);
+  pinMode(solenoidE3, OUTPUT);
+  pinMode(solenoidC1, OUTPUT);
+  pinMode(solenoidC2, OUTPUT);
+  //pinMode(solenoidC3, OUTPUT);
+  pinMode(solenoidG1, OUTPUT);
+  //pinMode(solenoidG2, OUTPUT);
+  pinMode(solenoidG3, OUTPUT);
+}
+
+void receiveData(int bytes){
+  songReceive = Wire.read();
+  Serial.println(songReceive);
+}
+
+//turns off all 10 solenoids
+void solenoidOff(){
+  digitalWrite(solenoidA1, LOW);
+  digitalWrite(solenoidA2, LOW);
+  digitalWrite(solenoidA3, LOW);
+  digitalWrite(solenoidE1, LOW);
+  digitalWrite(solenoidE2, LOW);
+  digitalWrite(solenoidE3, LOW);
+  digitalWrite(solenoidC1, LOW);
+  digitalWrite(solenoidC2, LOW);
+  digitalWrite(solenoidG1, LOW);
+  digitalWrite(solenoidG3, LOW);
+}
+
+// SERVO COMMANDS 
+void pluckA(int solenoid, int noteLength){
+  solenoidOff();                                        //ensures all solenoids are off before the next note is played
+  if (previouspluckA == false) {       //checks if this is the first pluck
+    for (angA = 25; angA <= 25; angA++) {               //loop so the solenoid stays actuated the entire time the servo plucks
+      digitalWrite(solenoid, HIGH);                     //turns on solenoid
+      servoA.write(angA);
+      delay(noteLength);                                //takes the full note length specified to pluck the string
+    }
+    previouspluckA = true;
+  }
+
+  else if (previouspluckA == true) {                    //runs if it is and "even" pluck
+    for (angA = 0; angA >= 0; angA--) {
+      digitalWrite(solenoid, HIGH);
+      servoA.write(angA);
+      delay(noteLength);
+    }
+    previouspluckA = false;
+  }
+
+  delay(50);
+}
+
+void pluckE(int solenoid, int noteLength){
+  solenoidOff();
+  if (previouspluckE == false) {    //if not an open string and is the first pluck
+    for (angE = 25; angE <= 25; angE++) {
+      digitalWrite(solenoid, HIGH);
+      servoE.write(angE);
+      delay(noteLength);
+    }
+    previouspluckE = true;
+  }
+
+  else if (previouspluckE == true) {  //if not an open string and is not the first pluck
+    for (angE = 0; angE >= 0; angE--) {
+      digitalWrite(solenoid, HIGH);
+      servoE.write(angE);
+      delay(noteLength);
+    }
+    previouspluckE = false;
+  }
+  
+  delay(50);
+}
+
+void pluckC(int solenoid, int noteLength){
+  solenoidOff();
+  if (previouspluckC == false) {    //if not an open string and is the first pluck
+    for (angC = 25; angC <= 25; angC++) {
+      digitalWrite(solenoid, HIGH);
+      servoC.write(angC);
+      delay(noteLength);
+    }
+    previouspluckC = true;
+  }
+
+  else if (previouspluckC == true) {  //if not an open string and is not the first pluck
+    for (angC = 0; angC >= 0; angC--) {
+      digitalWrite(solenoid, HIGH);
+      servoC.write(angC);
+      delay(noteLength);
+    }
+    previouspluckC = false;
+  }
+  
+  delay(50);
+}
+
+void pluckG(int solenoid, int noteLength){
+  solenoidOff();
+  if (previouspluckG == false) {    //if not an open string and is the first pluck
+    for (angG = 25; angG <= 25; angG++) {
+      digitalWrite(solenoid, HIGH);
+      servoG.write(angG);
+      delay(noteLength);
+    }
+    previouspluckG = true;
+  }
+
+  else if (previouspluckG == true) {  //if not an open string and is not the first pluck
+    for (angG = 0; angG >= 0; angG--) {
+      digitalWrite(solenoid, HIGH);
+      servoG.write(angC);
+      delay(noteLength);
+    }
+    previouspluckG = false;
+  }
+  
+  delay(50);
+}
+
+void pluckOpenA(int noteLength) {
+  solenoidOff();
+  if (previouspluckA == false) {
+    servoA.write(25);                     //move to position 25
+    delay(noteLength);
+    previouspluckA = true;
+  }
+  else {
+    servoA.write(0);                       //move to position 0
+    delay(noteLength);
+    previouspluckA = false;
+    }
+}
+
+void pluckOpenE(int noteLength) {
+  solenoidOff();
+  if (previouspluckE == false) {
+    servoE.write(25);                     //move to position 20
+    delay(noteLength);
+    previouspluckE = true;
+  }
+  else {
+    servoE.write(0);                       //move to position 0
+    delay(noteLength);
+    previouspluckE = false;
+  }
+}
+
+void pluckOpenC(int noteLength) {
+  solenoidOff();
+  if (previouspluckC == false) {
+    servoC.write(25);                     //move to position 20
+    delay(noteLength);
+    previouspluckC = true;
+  }
+  else {
+    servoC.write(0);                       //move to position 0
+    delay(noteLength);
+    previouspluckC = false;
+  }
+}
+
+void pluckOpenG(int noteLength) {
+  solenoidOff();
+  if (previouspluckG == false) {
+    servoG.write(25);                     //move to position 20
+    delay(noteLength);
+    previouspluckG = true;
+  }
+  else {
+    servoG.write(0);                       //move to position 0
+    delay(noteLength);
+    previouspluckG = false;
+  }
+}
+
+
+//SONG FUNCTIONS
+
+void playHappybirthday(){
+  double factor = 0.9;
+  
+  delay(1000);
+  pluckOpenC(quarter*factor);
+  pluckOpenC(quarter*factor);
+  pluckC(solenoidC2, half*factor);
+  pluckOpenC(half*factor);
+  pluckE(solenoidE1, half*factor);
+  pluckOpenE(half*factor);
+  delay(half);                //^Happy birthday to you^
+
+  pluckOpenC(quarter*factor);
+  pluckOpenC(quarter*factor);
+  pluckC(solenoidC2, half*factor);
+  pluckOpenC(half*factor);
+  pluckE(solenoidE3, half*factor);
+  pluckE(solenoidE1, half*factor);   
+  delay(half);                //^Happy birthday to you^
+
+  pluckOpenC(half*factor);
+  pluckOpenC(half*factor);
+  pluckA(solenoidA3, half*factor);
+  pluckOpenA(half*factor);
+  pluckE(solenoidE1, half*factor);
+  pluckOpenE(quarter*factor);
+  pluckC(solenoidC2, quarter*factor);
+  delay(quarter);             //^Happy birthday dear ____^
+
+  pluckA(solenoidA1, quarter*factor);
+  pluckA(solenoidA1, quarter*factor);
+  pluckOpenA(half*factor);
+  pluckE(solenoidE1, half*factor);
+  pluckE(solenoidE3, half*factor);
+  pluckE(solenoidE1, half*factor);
+  delay(1000);                //^Happy birthday to you^
+
+  solenoidOff();
+}
+
+void playTwinkleTwinkle() {
+  double factor = 1.5;
+  
+  pluckOpenC(quarter*factor);
+  pluckOpenC(quarter*factor);
+  pluckOpenG(quarter*factor);
+  pluckOpenG(quarter*factor);
+  pluckOpenA(quarter*factor);
+  pluckOpenA(quarter*factor);
+  pluckOpenG(half*factor);          //twinkle twinkle little star
+
+  pluckE(solenoidE1, quarter*factor);
+  pluckE(solenoidE1, quarter*factor);
+  pluckOpenE(quarter*factor);
+  pluckOpenE(quarter*factor);
+  pluckC(solenoidC2, quarter*factor);
+  pluckC(solenoidC2, quarter*factor);
+  pluckOpenC(half*factor);          //how I wonder what you are
+
+  pluckOpenG(quarter*factor);
+  pluckOpenG(quarter*factor);
+  pluckE(solenoidE1, quarter*factor);
+  pluckE(solenoidE1, quarter*factor);
+  pluckOpenE(quarter*factor);
+  pluckOpenE(quarter*factor);
+  pluckC(solenoidC2, half*factor);  //up above the world so high
+
+  pluckOpenG(quarter*factor);
+  pluckOpenG(quarter*factor);
+  pluckE(solenoidE1, quarter*factor);
+  pluckE(solenoidE1, quarter*factor);
+  pluckOpenE(quarter*factor);
+  pluckOpenE(quarter*factor);
+  pluckC(solenoidC2, half*factor);  //like a diamond in the sky
+
+  pluckOpenC(quarter*factor);
+  pluckOpenC(quarter*factor);
+  pluckOpenG(quarter*factor);
+  pluckOpenG(quarter*factor);
+  pluckOpenA(quarter*factor);
+  pluckOpenA(quarter*factor);
+  pluckOpenG(half*factor);          //twinkle twinkle little star
+
+  pluckE(solenoidE1, quarter*factor);
+  pluckE(solenoidE1, quarter*factor);
+  pluckOpenE(quarter*factor);
+  pluckOpenE(quarter*factor);
+  pluckC(solenoidC2, quarter*factor);
+  pluckC(solenoidC2, quarter*factor);
+  pluckOpenC(half*factor);          //how I wonder what you are
+
+  solenoidOff();
+}
+
+void loop(){
+  //Serial.println(songReceive);  USED TO RUN I2C TRANSMISSION TEST
+  //delay(1500);
+  
+  servoA.write(angA);
+  servoE.write(angE);
+  servoC.write(angC);
+  servoG.write(angG);
+  
+  while(songReceive == 0 || songReceive == 1 || songReceive == 2 ) {
+    if(songReceive == 0) {
+      playHappybirthday();
+      solenoidOff(); 
+    }
+    
+    else if(songReceive == 1) {
+      playTwinkleTwinkle();
+      solenoidOff();
+    }
+    
+    else {
+      //playRickroll();
+      solenoidOff();
+    }
+  }
+}
