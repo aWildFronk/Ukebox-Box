@@ -36,7 +36,7 @@ void setup() {
 
 void loop() {
 
-
+ Wire.beginTransmission(SLAVE_ADDRESS);
   if(digitalRead(buttonOne)==0){
     Button1();
     delay(300);                       //free will is an illusion
