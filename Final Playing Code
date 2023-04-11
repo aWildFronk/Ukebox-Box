@@ -14,22 +14,22 @@ Servo servoC;
 Servo servoG;
 
 // initialize the Servo pins
-int stringA = 10;
-int stringE = 8;
-int stringC = 9;
+int stringA = 8;
+int stringE = 9;
+int stringC = 10;
 int stringG = 11;
 
 // initialize the solenoid pins
-int solenoidG1 = 30;
-int solenoidG3 = 31; 
-int solenoidC1 = 32;
+int solenoidG1 = 36;
+int solenoidG3 = 30; 
+int solenoidC1 = 37;
 int solenoidC2 = 33; 
-int solenoidE1 = 34;
-int solenoidE2 = 35;
-int solenoidE3 = 36;
-int solenoidA1 = 37;
-int solenoidA2 = 38;  
-int solenoidA3 = 39;
+int solenoidE1 = 38; 
+int solenoidE2 = 35; 
+int solenoidE3 = 31; 
+int solenoidA1 = 39; 
+int solenoidA2 = 34; 
+int solenoidA3 = 32; 
 
 //SERVO HELPERS
 bool previouspluckA = false;
